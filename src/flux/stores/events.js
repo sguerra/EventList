@@ -4,18 +4,26 @@ import {
 } from '../constants';
 import BaseStore from './base-store';
 
+const STORAGE_KEY = 'EVENT_LIST';
+
 
 class EventsStore extends BaseStore{
 
 	constructor(){
 		super();
+
 		this.current = null;
 		this.empty = { 
 			description : '',
 			date: null
 		};
 		
-		this.events = [];
+
+		if(!localStorage[STORAGE_KEY]){
+			localStorage[STORAGE_KEY] = JSON.stringify([]);
+		}
+
+		this.events = JSON.parse(localStorage[STORAGE_KEY]);
 
 		this.actions = {
 
@@ -23,6 +31,8 @@ class EventsStore extends BaseStore{
 
 				let newEvent = action.data;
 				this.events.push(newEvent);
+
+				localStorage[STORAGE_KEY] = JSON.stringify(this.events);
 			}
 
 		};
