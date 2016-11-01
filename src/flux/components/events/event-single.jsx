@@ -37,7 +37,15 @@ let EventSingle = React.createClass({
 
 	onSaveClick(){
 
-		EventsActions.setEvent(this.state.current);
+		let current = this.state.current;
+		
+		if(!current.date || !current.description){
+
+			alert("Please fill all fields");
+			return;
+		}
+
+		EventsActions.setEvent(current);
 		this.goBack();
 	},
 
