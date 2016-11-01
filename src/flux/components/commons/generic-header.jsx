@@ -33,7 +33,7 @@ let GenericHeader = React.createClass({
 
 	render(){
 
-		let cancelButton, acceptButton;
+		let cancelButton, acceptButton, toolbarGroup;
 
 		cancelButton = !this.props.onCancelButtonClick ? null : (
 			<RaisedButton label={this.props.cancelLabel} onMouseDown={this.props.onCancelButtonClick}/>
@@ -43,12 +43,18 @@ let GenericHeader = React.createClass({
 			<RaisedButton secondary={true} label={this.props.acceptLabel} onMouseDown={this.props.onAcceptButtonClick}/>
 		);
 
+
+		toolbarGroup = this.props.toolbarGroup || null;
+
+
 		return (
 			<Toolbar style={styles.HEADER_TOOLBAR}>
 
 				<ToolbarGroup firstChild={true}>
 					<ToolbarTitle text={this.props.title} style={styles.HEADER_TOOLBAR_TITLE}/>
 				</ToolbarGroup>
+
+				{toolbarGroup}
 
 				<ToolbarGroup>
 					{cancelButton}
