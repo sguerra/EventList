@@ -1,4 +1,5 @@
 import React from 'react';
+import { RaisedButton, FlatButton, ToolbarGroup, TextField } from 'material-ui';
 import GenericTable from '../commons/generic-table.jsx';
 import GenericHeader from '../commons/generic-header.jsx';
 import Navigation from '../mixins/navigation';
@@ -33,7 +34,10 @@ function getEventsState(){
 	let events = EventsStore.getEvents();
 
 	return {
-		events: events
+		events: events,
+		searchText: '',
+		sortByDate: false,
+		sortByDescription: false
 	};
 };
 
@@ -54,23 +58,68 @@ let EventList = React.createClass({
 		this.transitionTo('events/new');
 	},
 
-	componentDidMount(){
-
-	},
-
 	_onChange(){
 
 		this.setState(getEventsState());
 	},
 
+	onTextChanged(e){
+
+		this.setState({
+			searchText: e.currentTarget.value
+		});
+	},
+	toggleSortDate(){
+
+		this.setState({ 
+			sortByDate: true,
+			sortByDescription: false 
+		});
+	},
+	toggleSortDescription(){
+
+		this.setState({ 
+			sortByDate: false,
+			sortByDescription: true
+		});
+	},
+
+
 	render(){
 
-		let events = this.state.events;
+		
+		let {
+			events,
+			searchText,
+			sortByDate,
+			sortByDescription
+		} = this.state;
+
+		if(searchText.length>0){
+
+			events = events.filter((e)=>{
+
+				if(!e.description ||  !e.date){
+					return false;
+				}
+
+				let date = (new Date(e.date)).toLocaleDateString();
+
+				return e.description.indexOf(searchText)>=0 ||  date.indexOf(searchText)>=0;
+			});
+		}
 
 		return (
 			<div>
 				<GenericHeader
 					title="Events"
+					toolbarGroup={(
+						<ToolbarGroup>
+							<TextField  ref="searchText" id="searchText" hintText="SEARCH EVENT..." onChange={this.onTextChanged}/>
+							<RaisedButton label="SORT BY DATE" secondary={sortByDate} onClick={this.toggleSortDate}/>
+							<RaisedButton label="SORT BY DESCRIPTION" secondary={sortByDescription} onClick={this.toggleSortDescription}/>
+						</ToolbarGroup>
+					)}
 				/>
 
 				<GenericTable
