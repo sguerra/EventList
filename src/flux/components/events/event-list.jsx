@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { RaisedButton, FlatButton, ToolbarGroup, TextField } from 'material-ui';
 import GenericTable from '../commons/generic-table.jsx';
 import GenericHeader from '../commons/generic-header.jsx';
@@ -72,15 +73,15 @@ let EventList = React.createClass({
 	toggleSortDate(){
 
 		this.setState({ 
-			sortByDate: true,
-			sortByDescription: false 
+			sortByDate: !this.state.sortByDate,
+			sortByDescription: false
 		});
 	},
 	toggleSortDescription(){
 
 		this.setState({ 
-			sortByDate: false,
-			sortByDescription: true
+			sortByDescription: !this.state.sortByDescription,
+			sortByDate: false
 		});
 	},
 
@@ -94,6 +95,8 @@ let EventList = React.createClass({
 			sortByDate,
 			sortByDescription
 		} = this.state;
+
+		// Search text
 
 		if(searchText.length>0){
 
@@ -109,6 +112,14 @@ let EventList = React.createClass({
 			});
 		}
 
+		// Sort
+
+		if(sortByDate){
+			events = _.sortBy(events, ['date']);
+		}else if(sortByDescription){
+			events = _.sortBy(events, ['description']);
+		}
+		
 		return (
 			<div>
 				<GenericHeader
