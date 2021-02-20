@@ -11,7 +11,7 @@ EventList
 git clone https://github.com/sguerra/EventList.git && cd EventList
 ```
 
-Make sure [Node.js](http://nodejs.org/) and [npm](https://www.npmjs.org/) are installed.
+Make sure [Node.js](http://nodejs.org/) and [npm](https://www.npmjs.org/) are installed .
 
 
 
